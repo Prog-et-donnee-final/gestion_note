@@ -1,0 +1,193 @@
+openapi: 3.0.3
+info:
+  version: '1.0'
+  title: HEI Admin API
+  description: test
+servers:
+  - url: '#'
+paths:
+  /students: 
+    get: 
+      tags:
+        - "Students"
+      summary: Get students 
+      operationId: getStudent 
+      responses:
+        '200':
+          description: Get all list of student
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          description: Bad request 
+          content:
+            text/plain:
+              example: test
+    put:
+      tags:
+        - Students
+      summary: Create new student or update existing student
+      description: Update student when `id` are provided, create them otherwise.
+      operationId: createOrUpdatestudent
+      requestBody:
+        description: student to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: The created or updated student
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'          
+  /students/{id}: 
+    get:
+      tags:
+        - "Students"
+      summary: Who am I? Tells you who you are.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: whoami
+      responses:
+        '200':
+          description: Get all list of student
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student' 
+        '400':
+          description: Bad request 
+          content:
+            text/plain:
+              example: test      
+  /courses:  
+    get: 
+      tags:
+        - Courses
+      summary: Get list of course
+      operationId: getCourses
+      responses:
+        '200':
+          description: Get all list of course
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          description: Bad request 
+          content:
+            text/plain:
+              example: test
+    put:
+      tags:
+        - Courses
+      summary: Create new course or update existing course
+      description: Update course when `id` are provided, create them otherwise.
+      operationId: createOrUpdatecourse
+      requestBody:
+        description: Course to update
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Course '
+      responses:
+        '200':
+          description: The created or updated course
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'          
+  /courses/{id}: 
+    get:
+      tags:
+        - "Courses"
+      summary: Get course with identifier
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: whoami
+      responses:
+        '200':
+          description: Get all list of student
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course' 
+        '400':
+          description: Bad request 
+          content:
+            text/plain:
+              example: test  
+    delete:
+      tags:
+        - "Courses"
+      summary: Delete course with specific id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: deleteId
+      responses:
+        '200':
+          description: Delete success
+          content:
+            text/plain:
+              example: test            
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+        first_name: 
+          type: string
+        last_name: 
+          type: string
+    Course:
+      type: object
+      properties:
+        id:
+          type: string
+        ref:
+          type: string
+        name: 
+          type: string
+    Exam:
+      type: object
+      properties:
+        id:
+          type: string
+        student:
+          allOf:
+            -$ref: '#/components/schemas/Student'
+        course:
+          allOf:
+            -$ref: '#/components/schemas/Course'
+        grade:
+          type: float
+        examDate:
+          type: string
+
